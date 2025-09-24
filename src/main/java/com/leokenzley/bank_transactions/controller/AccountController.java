@@ -3,7 +3,9 @@ package com.leokenzley.bank_transactions.controller;
 import com.leokenzley.bank_transactions.model.request.AccountRequest;
 import com.leokenzley.bank_transactions.model.response.AccountResponse;
 import com.leokenzley.bank_transactions.service.AccountService;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,11 +15,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+@Slf4j
 @Controller
 public class AccountController {
 
@@ -43,15 +46,27 @@ public class AccountController {
 
   @PostMapping("/admin/create-account")
   public String createAccount(
-    @Valid @ModelAttribute AccountRequest account,
+    @Valid @ModelAttribute("account") AccountRequest account,
     BindingResult bindingResult,
+    Model model,
     RedirectAttributes redirectAttributes) {
     if (bindingResult.hasErrors()) {
+      log.info("Form validation errors: {}", bindingResult.getAllErrors());
       return "create-account";
     }
-    accountService.createAccount(account);
-    redirectAttributes.addFlashAttribute("success", "Conta criada com sucesso!");
-    return "redirect:/menu";
+    try {
+      accountService.createAccount(account);
+      redirectAttributes.addFlashAttribute("success", "Conta criada com sucesso!");
+      return "redirect:/menu";
+    } catch (ConstraintViolationException e) {
+      log.error("Database validation error: {}", e.getMessage());
+      List<String> errors = new ArrayList<>();
+      e.getConstraintViolations().forEach(violation ->
+        errors.add(violation.getMessage()));
+      model.addAttribute("errors", errors);
+      model.addAttribute("account", account);
+      return "create-account";
+    }
   }
 
   // User: Credit

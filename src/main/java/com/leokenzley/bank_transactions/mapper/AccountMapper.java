@@ -12,7 +12,7 @@ public class AccountMapper {
     var entity = new AccountEntity();
     entity.setAccountNumber(request.getAccountNumber());
     entity.setClientName(request.getClientName());
-    entity.setBalance(request.getInitialBalance());
+    entity.setBalance(request.getBalance());
     return entity;
   }
 

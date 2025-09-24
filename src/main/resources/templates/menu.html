@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Menu</title>
+</head>
+<body>
+<h1>Menu Principal</h1>
+<div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+    <a href="/admin/create-account">Criar Conta</a><br/>
+</div>
+<div th:if="${#authorization.expression('hasAnyRole(''ROLE_ADMIN'', ''ROLE_USER'')')}">
+    <a href="/user/credit">Creditar Valor</a><br/>
+    <a href="/user/debit">Debitar Valor</a><br/>
+    <a href="/user/transfer">Transferir entre Contas</a><br/>
+</div>
+<a href="/logout">Logout</a>
+<div th:if="${success}" style="color: green;" th:text="${success}"></div>
+<div th:if="${error}" style="color: red;" th:text="${error}"></div>
+</body>
+</html>

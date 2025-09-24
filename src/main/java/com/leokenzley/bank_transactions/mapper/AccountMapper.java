@@ -12,7 +12,6 @@ public class AccountMapper {
     var entity = new AccountEntity();
     entity.setAccountNumber(request.getAccountNumber());
     entity.setClientName(request.getClientName());
-    entity.setBalance(request.getBalance());
     return entity;
   }
 
@@ -21,6 +20,7 @@ public class AccountMapper {
             .accountNumber(entity.getAccountNumber())
             .clientName(entity.getClientName())
             .balance(entity.getBalance())
+            .id(entity.getId())
             .build();
   }
 }

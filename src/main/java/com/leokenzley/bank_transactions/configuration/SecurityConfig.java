@@ -18,14 +18,14 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
       .authorizeHttpRequests((requests) -> requests
-        .requestMatchers("/admin/**").hasRole("ADMIN")
-        .requestMatchers("/user/**").hasAnyRole("ADMIN", "USER")
+        .requestMatchers("/accounts/**").hasRole("ADMIN")
+        .requestMatchers("/transactions/**").hasAnyRole("ADMIN", "USER")
         .requestMatchers("/", "/login", "/h2-console/**").permitAll()
         .anyRequest().authenticated()
       )
       .formLogin((form) -> form
         .loginPage("/login")
-        .defaultSuccessUrl("/menu")
+        .defaultSuccessUrl("/init")
         .permitAll()
       )
       .logout((logout) -> logout.permitAll())

@@ -8,6 +8,7 @@ import com.leokenzley.bank_transactions.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -21,7 +22,9 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   public void createAccount(AccountRequest request) {
-    repository.save(mapper.toEntity(request));
+    var account = mapper.toEntity(request);
+    account.setBalance(BigDecimal.ZERO);
+    repository.save(account);
   }
 
   @Override

@@ -5,16 +5,17 @@
 </head>
 <body>
 <h1>Creditar Valor</h1>
-<form th:action="@{/user/credit}" method="post">
+<form th:action="@{/transactions/credit}" th:object="${transactionCredit}" method="post">
     <label>Selecione uma conta:
         <select name="accountId" required>
             <option value="">Selecione uma conta</option>
-            <option th:each="account : ${accounts}" th:value="${account.id}" th:text="${account.clientName + ' (Saldo: ' + account.balance + ')'}"></option>
+            <option th:each="account : ${accounts}" th:field="*{accountId}" th:value="${account.id}" th:text="${account.clientName + ' (Saldo: ' + account.balance + ')'}"></option>
         </select>
     </label><br/>
-    <label>Valor do Depósito R$: <input type="number" step="0.01" name="amount" min="0.01" required/></label><br/>
+    <label>Valor do Depósito R$: <input type="number" step="0.01"  th:field="*{amount}" min="0.01" required/></label><br/>
     <button type="submit">Creditar</button>
 </form>
-<a href="/menu">Voltar</a>
+<div th:if="${error}" style="color: red;" th:text="${error}"></div>
+<a href="/init">Voltar</a>
 </body>
 </html>

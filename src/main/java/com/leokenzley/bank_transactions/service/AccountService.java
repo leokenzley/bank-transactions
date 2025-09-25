@@ -8,5 +8,4 @@ import java.util.List;
 public interface AccountService {
   void createAccount(AccountRequest request);
   List<AccountResponse> getAllAccounts();
-  AccountResponse getByAccountNumber(String accountNumber);
 }

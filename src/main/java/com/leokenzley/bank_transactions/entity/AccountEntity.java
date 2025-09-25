@@ -23,9 +23,6 @@ public class AccountEntity {
   @NotBlank(message = "Nome do cliente é obrigatório")
   private String clientName;
 
-  @NotBlank(message = "Número da conta do cliente é obrigatório")
-  private String accountNumber;
-
   @Min(value = 0, message = "Saldo inicial deve ser positivo")
   private BigDecimal balance = BigDecimal.ZERO;
 }

@@ -31,12 +31,4 @@ public class AccountServiceImpl implements AccountService {
   public List<AccountResponse> getAllAccounts() {
     return repository.findAll().stream().map(mapper::toResponse).toList();
   }
-
-  @Override
-  public AccountResponse getByAccountNumber(String accountNumber) {
-    return repository
-      .findByAccountNumber(accountNumber)
-      .map(mapper::toResponse)
-      .orElseThrow(()-> new RuntimeException("Conta não encontrada"));
-  }
 }

@@ -10,14 +10,12 @@ public class AccountMapper {
 
   public AccountEntity toEntity(AccountRequest request){
     var entity = new AccountEntity();
-    entity.setAccountNumber(request.getAccountNumber());
     entity.setClientName(request.getClientName());
     return entity;
   }
 
   public AccountResponse toResponse(AccountEntity entity){
     return AccountResponse.builder()
-            .accountNumber(entity.getAccountNumber())
             .clientName(entity.getClientName())
             .balance(entity.getBalance())
             .id(entity.getId())

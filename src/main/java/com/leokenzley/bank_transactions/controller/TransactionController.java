@@ -1,25 +1,30 @@
 package com.leokenzley.bank_transactions.controller;
 
+import com.leokenzley.bank_transactions.model.request.TransactionCreditRequest;
+import com.leokenzley.bank_transactions.model.request.TransactionTransferRequest;
+import com.leokenzley.bank_transactions.model.request.TransactionalDebitRequest;
 import com.leokenzley.bank_transactions.model.response.AccountResponse;
 import com.leokenzley.bank_transactions.service.AccountService;
 import com.leokenzley.bank_transactions.service.TransactionService;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
 @Slf4j
 @RequestMapping("/transactions")
+@Controller
 public class TransactionController {
   @Autowired
   private TransactionService transactionService;
@@ -30,61 +35,83 @@ public class TransactionController {
   public String showCreditForm(Model model) {
     List<AccountResponse> accounts = accountService.getAllAccounts();
     model.addAttribute("accounts", accounts);
-    model.addAttribute("formData", new HashMap<String, Object>());
-    return "credit";
+    model.addAttribute("transactionCredit", new TransactionCreditRequest(null, null));
+    return "/transactions/credit";
   }
 
   @PostMapping("/credit")
   public String credit(
-    @RequestParam String accountNumber,
-    @RequestParam BigDecimal amount,
-    RedirectAttributes redirectAttributes) {
+    @ModelAttribute("transactionCredit") TransactionCreditRequest credit,
+    RedirectAttributes redirectAttributes,
+    Model model) {
     try {
-      transactionService.credit(accountNumber, amount);
+      transactionService.credit(credit);
+      List<AccountResponse> accounts = accountService.getAllAccounts();
+      model.addAttribute("accounts", accounts);
       redirectAttributes.addFlashAttribute("success", "Crédito realizado com sucesso!");
     } catch (Exception e) {
       redirectAttributes.addFlashAttribute("error", e.getMessage());
+      return "/transactions/credit";
     }
-    return "redirect:/menu";
+    return "redirect:/init";
   }
 
-  // User: Debit
   @GetMapping("/debit")
   public String showDebitForm(Model model) {
     List<AccountResponse> accounts = accountService.getAllAccounts();
     model.addAttribute("accounts", accounts);
-    model.addAttribute("formData", new HashMap<String, Object>());
-    return "debit";
+    model.addAttribute("transactionalDebit", new TransactionalDebitRequest(null, null));
+    return "transactions/debit";
   }
 
   @PostMapping("/debit")
-  public String debit(@RequestParam String accountNumber, @RequestParam BigDecimal amount, RedirectAttributes redirectAttributes) {
+  public String debit(
+    @ModelAttribute("transactionDebit") TransactionalDebitRequest debit,
+    RedirectAttributes redirectAttributes,
+    Model model) {
+    List<AccountResponse> accounts = accountService.getAllAccounts();
+    model.addAttribute("accounts", accounts);
     try {
-      transactionService.debit(accountNumber, amount);
+      transactionService.debit(debit);
       redirectAttributes.addFlashAttribute("success", "Débito realizado com sucesso!");
-    } catch (Exception e) {
-      redirectAttributes.addFlashAttribute("error", e.getMessage());
+    } catch (ConstraintViolationException e) {
+      log.error("Database validation error: {}", e.getMessage());
+      List<String> errors = new ArrayList<>();
+      e.getConstraintViolations().forEach(violation ->
+      errors.add(violation.getMessage()));
+      model.addAttribute("errors", errors);
+      return "transactions/debit";
     }
-    return "redirect:/menu";
+    catch (Exception e) {
+      redirectAttributes.addFlashAttribute("error", e.getMessage());
+      return "transactions/debit";
+    }
+    return "redirect:/init";
   }
 
-  // User: Transfer
+
   @GetMapping("/transfer")
   public String showTransferForm(Model model) {
     List<AccountResponse> accounts = accountService.getAllAccounts();
     model.addAttribute("accounts", accounts);
     model.addAttribute("formData", new HashMap<String, Object>());
-    return "transfer";
+    return "transactions/transfer";
   }
 
   @PostMapping("/transfer")
-  public String transfer(@RequestParam String fromAccountId, @RequestParam String toAccountId, @RequestParam BigDecimal amount, RedirectAttributes redirectAttributes) {
+  public String transfer(
+    @ModelAttribute("transactionTransfer") TransactionTransferRequest request,
+    RedirectAttributes redirectAttributes,
+    Model model) {
     try {
-      transactionService.transfer(fromAccountId, toAccountId, amount);
+      transactionService.transfer(request);
       redirectAttributes.addFlashAttribute("success", "Transferência realizada com sucesso!");
+      List<AccountResponse> accounts = accountService.getAllAccounts();
+      model.addAttribute("accounts", accounts);
     } catch (Exception e) {
       redirectAttributes.addFlashAttribute("error", e.getMessage());
+      return "transactions/transfer";
     }
-    return "redirect:/menu";
+    return "redirect:/init";
   }
 }

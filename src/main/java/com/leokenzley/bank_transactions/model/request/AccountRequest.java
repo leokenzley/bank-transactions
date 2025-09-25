@@ -9,6 +9,4 @@ import lombok.Setter;
 public class AccountRequest {
   @NotBlank(message = "Campo nome do cliente é obrigatório")
   private String clientName;
-  @NotBlank(message = "Campo número da conta é obrigatório")
-  private String accountNumber;
 }

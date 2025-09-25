@@ -1,9 +1,11 @@
 package com.leokenzley.bank_transactions.service;
 
-import java.math.BigDecimal;
+import com.leokenzley.bank_transactions.model.request.TransactionCreditRequest;
+import com.leokenzley.bank_transactions.model.request.TransactionTransferRequest;
+import com.leokenzley.bank_transactions.model.request.TransactionalDebitRequest;
 
 public interface TransactionService {
-  void credit(String accountNumber, BigDecimal amount);
-  void debit(String accountNumber, BigDecimal amount);
-  void transfer(String fromAccountNumber, String toAccountNumber, BigDecimal amount);
+  void credit(TransactionCreditRequest credit);
+  void debit(TransactionalDebitRequest request);
+  void transfer(TransactionTransferRequest request);
 }

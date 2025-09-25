@@ -63,7 +63,7 @@ class AccountControllerTest {
   @DisplayName("Testa o POST /create-account quando há erros de validação (BindingResult.hasErrors == true)")
   @Test
   void testCreateAccountWithValidationErrors() {
-    AccountRequest request = new AccountRequest();
+    AccountRequest request = new AccountRequest(null);
     when(bindingResult.hasErrors()).thenReturn(true);
 
     String viewName = controller.createAccount(request, bindingResult, model, redirectAttributes);
@@ -81,8 +81,7 @@ class AccountControllerTest {
   @DisplayName("Testa o POST /create-account simulando a exception ConstraintViolationException")
   @Test
   void testCreateAccountConstraintViolationExceptionWithErrors() {
-    AccountRequest request = new AccountRequest();
-    request.setClientName("Neo");
+    var request = new AccountRequest("Neo");
 
     when(bindingResult.hasErrors()).thenReturn(false);
 
@@ -111,8 +110,7 @@ class AccountControllerTest {
   @DisplayName("Testa o POST /create-account quando a validação passa")
   @Test
   void testCreateAccountSuccess() {
-    AccountRequest request = new AccountRequest();
-    request.setClientName("Neo");
+    var request = new AccountRequest("Neo");
 
     when(bindingResult.hasErrors()).thenReturn(false);
 
@@ -134,8 +132,7 @@ class AccountControllerTest {
   @DisplayName("Testa o POST /create-account quando o service lança ConstraintViolationException")
   @Test
   void testCreateAccountConstraintViolationException() {
-    AccountRequest request = new AccountRequest();
-    request.setClientName("Neo");
+    var request = new AccountRequest("Neo");
 
     when(bindingResult.hasErrors()).thenReturn(false);
 

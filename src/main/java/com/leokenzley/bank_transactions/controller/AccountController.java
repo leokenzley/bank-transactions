@@ -28,7 +28,7 @@ public class AccountController {
 
   @GetMapping("/create-account")
   public String showCreateAccountForm(Model model) {
-    model.addAttribute("account", new AccountRequest());
+    model.addAttribute("account", new AccountRequest(null));
     return "accounts/create-account";
   }
 

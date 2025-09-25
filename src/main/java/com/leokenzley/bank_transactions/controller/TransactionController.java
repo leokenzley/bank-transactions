@@ -6,6 +6,7 @@ import com.leokenzley.bank_transactions.model.request.TransactionalDebitRequest;
 import com.leokenzley.bank_transactions.model.response.AccountResponse;
 import com.leokenzley.bank_transactions.service.AccountService;
 import com.leokenzley.bank_transactions.service.TransactionService;
+import com.leokenzley.bank_transactions.service.TransferService;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class TransactionController {
   private TransactionService transactionService;
   @Autowired
   private AccountService accountService;
+
+  @Autowired
+  private TransferService transferService;
 
   @GetMapping("/credit")
   public String showCreditForm(Model model) {
@@ -111,6 +115,31 @@ public class TransactionController {
     } catch (Exception e) {
       redirectAttributes.addFlashAttribute("error", e.getMessage());
       return "transactions/transfer";
+    }
+    return "redirect:/init";
+  }
+
+  @GetMapping("/transferCase2")
+  public String showTransferCase2Form(Model model) {
+    List<AccountResponse> accounts = accountService.getAllAccounts();
+    model.addAttribute("accounts", accounts);
+    model.addAttribute("formData", new HashMap<String, Object>());
+    return "transactions/transferCase2";
+  }
+
+  @PostMapping("/transferCase2")
+  public String transferCase2(
+    @ModelAttribute("transactionTransfer") TransactionTransferRequest request,
+    RedirectAttributes redirectAttributes,
+    Model model) {
+    try {
+      transferService.transfer(request.fromAccountId(), request.toAccountId(), request.amount());
+      redirectAttributes.addFlashAttribute("success", "Transferência realizada com sucesso!");
+      List<AccountResponse> accounts = accountService.getAllAccounts();
+      model.addAttribute("accounts", accounts);
+    } catch (Exception e) {
+      redirectAttributes.addFlashAttribute("error", e.getMessage());
+      return "transactions/transferCase2";
     }
     return "redirect:/init";
   }

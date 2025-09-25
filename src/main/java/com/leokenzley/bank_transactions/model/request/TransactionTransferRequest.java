@@ -10,7 +10,7 @@ public record TransactionTransferRequest(
   Long fromAccountId,
   @NotNull(message = "O ID da conta de destino é obrigatória")
   Long toAccountId,
-  @DecimalMin(value = "0.1", message = "O valor da transferência ser maior que zero")
+  //@DecimalMin(value = "0.1", message = "O valor da transferência ser maior que zero")
   BigDecimal amount
 ) {
 }

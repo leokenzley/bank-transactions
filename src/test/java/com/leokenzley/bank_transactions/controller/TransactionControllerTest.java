@@ -130,8 +130,6 @@ class TransactionControllerTest {
     assertEquals("redirect:/init", view);
   }
 
-  // ==================== POST METHODS - EXCEPTIONS ====================
-
   @Test
   void testCreditException() {
     TransactionCreditRequest request = new TransactionCreditRequest(1L, BigDecimal.valueOf(100));

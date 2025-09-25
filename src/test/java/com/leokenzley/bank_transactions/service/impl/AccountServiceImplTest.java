@@ -43,8 +43,7 @@ class AccountServiceImplTest {
   @DisplayName("Testa criação de conta com saldo zerado")
   @Test
   void testCreateAccount() {
-    AccountRequest request = new AccountRequest();
-    request.setClientName(CLIENT_NAME_NEO);
+    var request = new AccountRequest(CLIENT_NAME_NEO);
 
     var accountEntity = new AccountEntity();
     when(mapper.toEntity(request)).thenReturn(accountEntity);

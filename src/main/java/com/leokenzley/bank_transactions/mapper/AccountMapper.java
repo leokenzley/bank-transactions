@@ -10,7 +10,7 @@ public class AccountMapper {
 
   public AccountEntity toEntity(AccountRequest request){
     var entity = new AccountEntity();
-    entity.setClientName(request.getClientName());
+    entity.setClientName(request.clientName());
     return entity;
   }
 

@@ -39,7 +39,7 @@ public class AccountController {
     Model model,
     RedirectAttributes redirectAttributes) {
     if (bindingResult.hasErrors()) {
-      log.info("Form validation errors: {}", bindingResult.getAllErrors());
+      log.info("Campos do formulário com erros de validação: {}", bindingResult.getAllErrors());
       return "accounts/create-account";
     }
     try {
@@ -47,7 +47,7 @@ public class AccountController {
       redirectAttributes.addFlashAttribute("success", "Conta criada com sucesso!");
       return "redirect:/init";
     } catch (ConstraintViolationException e) {
-      log.error("Database validation error: {}", e.getMessage());
+      log.error("Erros na validação dos campos do banco: {}", e.getMessage());
       List<String> errors = new ArrayList<>();
       e.getConstraintViolations().forEach(violation ->
         errors.add(violation.getMessage()));

@@ -13,7 +13,7 @@ public class AuthenticationController {
     return "/authentication/login";
   }
 
-  @GetMapping("/init")
+  @GetMapping({"/init", "/"})
   public String init() {
     return "/init";
   }

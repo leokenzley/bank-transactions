@@ -29,6 +29,9 @@ public class SecurityConfig {
         .permitAll()
       )
       .logout((logout) -> logout.permitAll())
+      .exceptionHandling((exceptions) -> exceptions
+        .accessDeniedPage("/access-danied") // aqui configuramos a página customizada
+      )
       .csrf(csrf -> csrf
         .ignoringRequestMatchers("/h2-console/**")
       )

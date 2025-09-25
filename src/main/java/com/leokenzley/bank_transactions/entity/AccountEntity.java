@@ -6,7 +6,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -15,6 +17,8 @@ import java.math.BigDecimal;
 @Setter
 @Entity
 @Table(name = "tb_account")
+@NoArgsConstructor
+@AllArgsConstructor
 public class AccountEntity {
   @Id
   @GeneratedValue

@@ -31,13 +31,13 @@
             <span th:if="${#fields.hasErrors('clientName')}" th:errors="*{clientName}" class="error"></span>
         </div>
     </div>
-    <div class="row g-1">
+    <div class="row g-1" style="padding-top: 10px;">
         <div class="col">
             <button type="submit" class="btn btn-primary">Criar</button>
+            <a th:replace="fragments/button-voltar :: button-voltar">Voltar</a>
         </div>
     </div>
 </form>
-    <a href="/init">Voltar</a>
 </div>
 
 </body>

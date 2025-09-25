@@ -47,33 +47,12 @@
         </div>
     </div>
     <div class="row g-1" style="padding-top: 10px;">
-        <div class="col" style="max-width: 400px;">
+        <div class="col">
             <button type="submit" class="btn btn-primary">Creditar</button>
+            <a th:replace="fragments/button-voltar :: button-voltar">Voltar</a>
         </div>
     </div>
 </form>
-    <a href="/init">Voltar</a>
 </div>
-
-
-
-
-
-
-<!--
-<h1>Creditar Valor</h1>
-<form th:action="@{/transactions/credit}" th:object="${transactionCredit}" method="post">
-    <label>Selecione uma conta:
-        <select name="accountId" required>
-            <option value="">Selecione uma conta</option>
-            <option th:each="account : ${accounts}" th:field="*{accountId}" th:value="${account.id}" th:text="${account.clientName + ' (Saldo: ' + account.balance + ')'}"></option>
-        </select>
-    </label><br/>
-    <label>Valor do Depósito R$: <input type="number" step="0.01"  th:field="*{amount}" min="0.01" required/></label><br/>
-    <button type="submit">Creditar</button>
-</form>
-<div th:if="${error}" style="color: red;" th:text="${error}"></div>
--->
-
 </body>
 </html>

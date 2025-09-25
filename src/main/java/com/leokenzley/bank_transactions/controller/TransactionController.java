@@ -87,13 +87,12 @@ public class TransactionController {
       e.getConstraintViolations().forEach(violation ->
       errors.add(violation.getMessage()));
       model.addAttribute("errors", errors);
-      return "transactions/debit";
     }
     catch (Exception e) {
       model.addAttribute("errors", Arrays.asList(e.getMessage()));
       model.addAttribute("transactionalDebit", debit);
-      return "transactions/debit";
     }
+    return "transactions/debit";
   }
 
 

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav th:fragment="menu" class="navbar bg-primary navbar-expand-lg" data-bs-theme="light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/init">Início|</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                    <a class="nav-link active" aria-current="page" href="/accounts/create-account">Criar Conta</a>
+                </li>
+                <li class="nav-item" th:if="${#authorization.expression('hasAnyRole(''ROLE_ADMIN'', ''ROLE_USER'')')}">
+                    <a class="nav-link" href="/transactions/credit">Creditar Valor</a>
+                </li>
+                <li class="nav-item" th:if="${#authorization.expression('hasAnyRole(''ROLE_ADMIN'', ''ROLE_USER'')')}">
+                    <a class="nav-link" href="/transactions/debit">Debitar Valor</a>
+                </li>
+                <li class="nav-item" th:if="${#authorization.expression('hasAnyRole(''ROLE_ADMIN'', ''ROLE_USER'')')}">
+                    <a class="nav-link" href="/transactions/transfer">Transferir Valor</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

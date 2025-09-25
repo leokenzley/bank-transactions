@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -75,9 +76,11 @@ public class TransactionController {
     Model model) {
     List<AccountResponse> accounts = accountService.getAllAccounts();
     model.addAttribute("accounts", accounts);
+    model.addAttribute("transactionalDebit", new TransactionalDebitRequest(null, null));
     try {
       transactionService.debit(debit);
       redirectAttributes.addFlashAttribute("success", "Débito realizado com sucesso!");
+      return "redirect:/init";
     } catch (ConstraintViolationException e) {
       log.error("Database validation error: {}", e.getMessage());
       List<String> errors = new ArrayList<>();
@@ -87,10 +90,10 @@ public class TransactionController {
       return "transactions/debit";
     }
     catch (Exception e) {
-      redirectAttributes.addFlashAttribute("error", e.getMessage());
+      model.addAttribute("errors", Arrays.asList(e.getMessage()));
+      model.addAttribute("transactionalDebit", debit);
       return "transactions/debit";
     }
-    return "redirect:/init";
   }
 
 
@@ -98,7 +101,7 @@ public class TransactionController {
   public String showTransferForm(Model model) {
     List<AccountResponse> accounts = accountService.getAllAccounts();
     model.addAttribute("accounts", accounts);
-    model.addAttribute("formData", new HashMap<String, Object>());
+    model.addAttribute("transactionTransfer", new TransactionTransferRequest(null, null, null));
     return "transactions/transfer";
   }
 
@@ -107,39 +110,14 @@ public class TransactionController {
     @ModelAttribute("transactionTransfer") TransactionTransferRequest request,
     RedirectAttributes redirectAttributes,
     Model model) {
+    List<AccountResponse> accounts = accountService.getAllAccounts();
+    model.addAttribute("accounts", accounts);
     try {
       transactionService.transfer(request);
       redirectAttributes.addFlashAttribute("success", "Transferência realizada com sucesso!");
-      List<AccountResponse> accounts = accountService.getAllAccounts();
-      model.addAttribute("accounts", accounts);
     } catch (Exception e) {
-      redirectAttributes.addFlashAttribute("error", e.getMessage());
+      model.addAttribute("errors", Arrays.asList(e.getMessage()));
       return "transactions/transfer";
-    }
-    return "redirect:/init";
-  }
-
-  @GetMapping("/transferCase2")
-  public String showTransferCase2Form(Model model) {
-    List<AccountResponse> accounts = accountService.getAllAccounts();
-    model.addAttribute("accounts", accounts);
-    model.addAttribute("formData", new HashMap<String, Object>());
-    return "transactions/transferCase2";
-  }
-
-  @PostMapping("/transferCase2")
-  public String transferCase2(
-    @ModelAttribute("transactionTransfer") TransactionTransferRequest request,
-    RedirectAttributes redirectAttributes,
-    Model model) {
-    try {
-      transferService.transfer(request.fromAccountId(), request.toAccountId(), request.amount());
-      redirectAttributes.addFlashAttribute("success", "Transferência realizada com sucesso!");
-      List<AccountResponse> accounts = accountService.getAllAccounts();
-      model.addAttribute("accounts", accounts);
-    } catch (Exception e) {
-      redirectAttributes.addFlashAttribute("error", e.getMessage());
-      return "transactions/transferCase2";
     }
     return "redirect:/init";
   }

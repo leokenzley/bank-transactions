@@ -6,6 +6,7 @@ import com.leokenzley.bank_transactions.model.response.AccountResponse;
 import com.leokenzley.bank_transactions.repository.AccountRepository;
 import com.leokenzley.bank_transactions.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -29,6 +30,9 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   public List<AccountResponse> getAllAccounts() {
-    return repository.findAll().stream().map(mapper::toResponse).toList();
+    return repository
+      .findAll(Sort.by(Sort.Direction.ASC, "clientName"))
+      .stream()
+      .map(mapper::toResponse).toList();
   }
 }

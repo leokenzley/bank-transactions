@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Slf4j
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -93,8 +95,13 @@ public class TransactionServiceImpl implements TransactionService {
     var fromAccount = (firstAccount.getId().equals(request.fromAccountId())) ? firstAccount : secondAccount;
     var toAccount = (fromAccount == firstAccount) ? secondAccount : firstAccount;
 
+
+
     // Se a conta que for debitada tentar tirar um valor maior do que o saldo, lanço uma exceção
-    if (fromAccount.getBalance().compareTo(request.amount()) < 0) throw new RuntimeException("Saldo insuficiente");
+    if (fromAccount.getBalance().compareTo(BigDecimal.ZERO) == 0 ||
+      fromAccount.getBalance().compareTo(request.amount()) < 0){
+      throw new RuntimeException("Saldo insuficiente");
+    }
 
     // Atualizo o saldo das contas
     log.info("Transferindo R$ {} da conta {} para a conta {}", fromAccount.getClientName(), toAccount.getClientName());

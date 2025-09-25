@@ -19,7 +19,7 @@ public class SecurityConfig {
     http
       .authorizeHttpRequests((requests) -> requests
         .requestMatchers("/accounts/**").hasRole("ADMIN")
-        .requestMatchers("/transactions/**").hasAnyRole("ADMIN", "USER")
+        .requestMatchers("/transactions/**").hasAnyRole("USER")
         .requestMatchers("/", "/login", "/h2-console/**", "/logout").permitAll()
         .anyRequest().authenticated()
       )

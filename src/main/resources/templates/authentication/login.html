@@ -19,10 +19,19 @@
             border-radius: 1rem;
             box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
         }
+        .fade-in {
+            opacity: 0;              /* Começa invisível */
+            transition: opacity 1s ease-in-out; /* Duração e suavidade da transição */
+        }
+
+        /* Classe ativa que dispara o fade-in */
+        .fade-in.show {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
-<div class="login-container">
+<div class="login-container fade-in">
     <div class="card p-4" style="max-width: 400px; width: 100%;">
         <div class="card-body">
             <h3 class="text-center mb-4">Login</h3>
@@ -42,7 +51,12 @@
         </div>
     </div>
 </div>
-
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const div = document.querySelector('.fade-in');
+    div.classList.add('show');
+});
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

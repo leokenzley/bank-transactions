@@ -14,13 +14,7 @@
     <div class="row g-12">
         <h1>Creditar Valor</h1>
     </div>
-<div class="row g-12">
-    <div class="alert alert-warning" role="alert" th:if="${errors != null}">
-        <ul>
-            <li th:each="error : ${errors}" th:text="${error}"></li>
-        </ul>
-    </div>
-</div>
+    <div th:replace="fragments/alert-error :: alert-error"></div>
 <form th:action="@{/transactions/credit}" th:object="${transactionCredit}" method="post">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <div class="row g-1" style="padding-top: 10px;">

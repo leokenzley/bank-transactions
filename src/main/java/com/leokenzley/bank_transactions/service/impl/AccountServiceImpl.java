@@ -8,6 +8,7 @@ import com.leokenzley.bank_transactions.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import jakarta.validation.Valid;
 
 import java.math.BigDecimal;
 import java.util.List;

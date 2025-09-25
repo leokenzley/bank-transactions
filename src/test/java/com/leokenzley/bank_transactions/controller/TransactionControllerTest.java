@@ -82,7 +82,7 @@ class TransactionControllerTest {
     String view = controller.showTransferForm(model);
 
     verify(model).addAttribute("accounts", List.of(account1));
-    verify(model).addAttribute(eq("formData"), any());
+    verify(model).addAttribute(eq("transactionTransfer"), any());
     assertEquals("transactions/transfer", view);
   }
 
@@ -164,8 +164,8 @@ class TransactionControllerTest {
     doThrow(new RuntimeException("Erro genérico")).when(transactionService).debit(request);
 
     String view = controller.debit(request, redirectAttributes, model);
-
-    verify(redirectAttributes).addFlashAttribute("error", "Erro genérico");
+    model.addAttribute("accounts", accountService.getAllAccounts());
+    verify(model).addAttribute(eq("errors"), eq(List.of("Erro genérico")));
     assertEquals("transactions/debit", view);
   }
 
@@ -173,10 +173,9 @@ class TransactionControllerTest {
   void testTransferException() {
     TransactionTransferRequest request = new TransactionTransferRequest(1L, 2L, BigDecimal.valueOf(200));
     doThrow(new RuntimeException("Erro transferência")).when(transactionService).transfer(request);
-
     String view = controller.transfer(request, redirectAttributes, model);
-
-    verify(redirectAttributes).addFlashAttribute("error", "Erro transferência");
+    verify(model).addAttribute(eq("errors"), eq(List.of("Erro transferência")));
     assertEquals("transactions/transfer", view);
   }
+
 }

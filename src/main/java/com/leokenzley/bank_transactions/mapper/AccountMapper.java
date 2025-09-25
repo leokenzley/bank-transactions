@@ -9,12 +9,18 @@ import org.springframework.stereotype.Component;
 public class AccountMapper {
 
   public AccountEntity toEntity(AccountRequest request){
+    if(request == null)
+      return null;
+
     var entity = new AccountEntity();
     entity.setClientName(request.clientName());
     return entity;
   }
 
   public AccountResponse toResponse(AccountEntity entity){
+    if(entity == null)
+      return null;
+
     return AccountResponse.builder()
             .clientName(entity.getClientName())
             .balance(entity.getBalance())

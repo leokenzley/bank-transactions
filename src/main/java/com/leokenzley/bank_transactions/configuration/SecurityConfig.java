@@ -20,7 +20,7 @@ public class SecurityConfig {
       .authorizeHttpRequests((requests) -> requests
         .requestMatchers("/accounts/**").hasRole("ADMIN")
         .requestMatchers("/transactions/**").hasAnyRole("ADMIN", "USER")
-        .requestMatchers("/", "/login", "/h2-console/**").permitAll()
+        .requestMatchers("/", "/login", "/h2-console/**", "/logout").permitAll()
         .anyRequest().authenticated()
       )
       .formLogin((form) -> form
@@ -28,7 +28,13 @@ public class SecurityConfig {
         .defaultSuccessUrl("/init")
         .permitAll()
       )
-      .logout((logout) -> logout.permitAll())
+      .logout((logout) -> logout
+        .logoutUrl("/logout") // URL padrão para logout
+        .logoutSuccessUrl("/login?logout") // Redireciona para /login com parâmetro logout
+        .invalidateHttpSession(true) // Invalida a sessão
+        .deleteCookies("JSESSIONID") // Remove cookies da sessão
+        .permitAll()
+      )
       .exceptionHandling((exceptions) -> exceptions
         .accessDeniedPage("/access-danied") // aqui configuramos a página customizada
       )

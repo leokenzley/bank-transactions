@@ -27,9 +27,6 @@
         <div class="col">
             <input type="text" th:field="*{clientName}" class="form-control" placeholder="Nome do Cliente" aria-label="Nome do Cliente">
         </div>
-        <div class="col">
-            <span th:if="${#fields.hasErrors('clientName')}" th:errors="*{clientName}" class="error"></span>
-        </div>
     </div>
     <div class="row g-1" style="padding-top: 10px;">
         <div class="col">

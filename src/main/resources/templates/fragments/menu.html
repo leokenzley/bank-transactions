@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<nav th:fragment="menu" class="navbar bg-primary navbar-expand-lg" data-bs-theme="light">
+<nav th:fragment="menu" class="navbar bg-primary navbar-expand-lg" data-bs-theme="dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="/init">Início|</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,6 +22,9 @@
                     <a class="nav-link" href="/transactions/transfer">Transferir Valor</a>
                 </li>
             </ul>
+            <span class="navbar-text">
+                <a class="nav-link" href="/logout">Sair</a>
+            </span>
         </div>
     </div>
 </nav>

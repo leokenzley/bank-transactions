@@ -27,4 +27,9 @@ public class AuthenticationController {
     model.addAttribute("accounts", accounts);
     return "/init";
   }
+
+  @GetMapping("/logout")
+  public String logout() {
+    return "/authentication/login";
+  }
 }

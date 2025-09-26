@@ -55,7 +55,7 @@ Se uma transação deixar o saldo **negativo**, a restrição será violada.
 
 ---
 
-## 🛠️ 2. Sugestões de Correção
+## 2. Sugestões de Correção
 
 ### Controle de Concorrência
 - Implementar **lock otimista ou pessimista** para garantir atualização correta do saldo em transações simultâneas.

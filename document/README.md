@@ -71,7 +71,15 @@ private BigDecimal balance;
 ### ✅ Arquivos a Ajustar
 - `AccountEntity.java` → `com.leokenzley.bank_transactions.entity`
 - `AccountServiceImpl.java` → `com.leokenzley.bank_transactions.service.impl`
+- `AccountRepository.java` → `com.leokenzley.bank_transactions.repository`
 
+
+### ✅ Travar a linha leitura e escrita até que o processamento seja feito.
+```java
+  @Lock(LockModeType.PESSIMISTIC_WRITE)
+  @Query("select a from AccountEntity a where a.id = :id")
+  Optional<AccountEntity> findByAccountIdPessimistic(@Param("id") Long accountId);
+```
 ---
 
 ## 📖 3. Relação com Transações e Concorrência
